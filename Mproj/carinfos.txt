@@ -1,0 +1,30 @@
+owner name: Dianne
+car model:Porsche
+car type: super car
+parking hrs: 8 hrs
+total: 1600 
+----------------------------------------
+owner name: Dianne
+car model:Porsche
+car type: super car
+parking hrs: 7 hrs
+total: 1500 
+----------------------------------------
+owner name: ian
+car model:bmw
+car type: motorcycle
+parking hrs: 7 hrs
+total: 525 
+----------------------------------------
+owner name: andy
+car model:honda
+car type: sedan
+parking hrs: 8 hrs
+total: 860 
+----------------------------------------
+owner name: oo
+car model:honda
+car type: motorcycle
+parking hrs: 8 hrs
+total: 600 
+----------------------------------------
