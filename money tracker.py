@@ -5,16 +5,53 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("dark-blue")
+ctk.set_default_color_theme("green")
 
 
 class Application(ctk.CTk):
+    """
+    A class representing the Finance Tracker application.
+
+    Attributes:
+        income (float): The total income amount.
+        expense (float): The total expense amount.
+        income_transactions (list): A list of income transactions.
+        expense_transactions (list): A list of expense transactions.
+        main_frame (ctk.CTkFrame): The main frame of the application.
+        sidebar_frame (ctk.CTkFrame): The sidebar frame with navigation buttons.
+        logo_label (ctk.CTkLabel): The label displaying the application logo.
+        income_button (ctk.CTkButton): The button for navigating to the income section.
+        expenses_button (ctk.CTkButton): The button for navigating to the expenses section.
+        balance_button (ctk.CTkButton): The button for navigating to the balance section.
+        income_frame (ctk.CTkFrame): The frame for adding income transactions.
+        income_tree (ttk.Treeview): The table for displaying income transactions.
+        expense_frame (ctk.CTkFrame): The frame for adding expense transactions.
+        expense_tree (ttk.Treeview): The table for displaying expense transactions.
+        balance_frame (ctk.CTkFrame): The frame for displaying the balance section.
+        fig (Figure): The figure for the balance plot.
+        canvas (FigureCanvasTkAgg): The canvas for displaying the balance plot.
+
+    Methods:
+        __init__(): Initializes the Finance Tracker application.
+        create_transaction_frame(): Creates a frame for adding transactions.
+        create_balance_frame(): Creates a frame for displaying the balance section.
+        hide_frames(): Hides all frames in the application.
+        income_button_event(): Event handler for the income button.
+        expenses_button_event(): Event handler for the expenses button.
+        balance_button_event(): Event handler for the balance button.
+        add_income(): Adds an income transaction.
+        add_expense(): Adds an expense transaction.
+        get_amount_from_entry(): Retrieves the amount from an entry field.
+        update_plot(): Updates the balance plot.
+        update_table(): Updates the transaction table.
+    """
     def __init__(self):
         super().__init__()
 
         # configure window
         self.title("Finance Tracker")
-        self.geometry(f"{800}x{500}")
+        self.geometry("800x600")
+        self.resizable(True, True)
 
         # configure grid layout
         self.grid_columnconfigure(1, weight=5)
@@ -25,16 +62,16 @@ class Application(ctk.CTk):
         self.income_transactions = [] 
         self.expense_transactions = []
 
+
         # create main frame
-        self.main_frame = ctk.CTkFrame(self, corner_radius=0)
+        self.main_frame = ctk.CTkFrame(self, corner_radius=10)
         self.main_frame.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
 
         # create sidebar frame with widgets
         self.sidebar_frame = ctk.CTkFrame(self, width=250, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
 
-        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="Finance Tracker", 
-                                                 font=ctk.CTkFont(size=30, weight="bold"))
+        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="Finance Tracker", font=ctk.CTkFont(size=30, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
 
         # Adding navigation buttons
@@ -52,10 +89,9 @@ class Application(ctk.CTk):
 
         self.hide_frames()
         self.income_frame.grid()
-
-        # Plot
-        self.fig = Figure(figsize = (4, 4), dpi = 100) 
-        self.canvas = FigureCanvasTkAgg(self.fig, master = self.balance_frame)
+        #plot
+        self.fig = Figure(figsize=(5,5), dpi=100)
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.balance_frame)
         self.canvas.get_tk_widget().grid(row=1, column=0)
 
     def create_transaction_frame(self, title, button_command, row, transactions):
@@ -75,7 +111,7 @@ class Application(ctk.CTk):
         # Add a transactions table
         tree = ttk.Treeview(frame)
         tree["columns"]=("Category","Amount")
-        tree.column("#0", width=0, stretch="NO")
+        tree.column("#0", width=0, stretch=False)
         tree.column("Category", anchor="w", width=120)
         tree.column("Amount", anchor="w", width=120)
         tree.heading("Category", text="Category",anchor='w')
@@ -153,9 +189,3 @@ class Application(ctk.CTk):
 if __name__ == "__main__":
     app = Application()
     app.mainloop()
-
-###########################
-
-#Contributor: Hina Ota
-
-##########################
