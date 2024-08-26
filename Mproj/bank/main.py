@@ -81,8 +81,7 @@ class Bank:
                         print("2. Withdraw")
                         print("3. Show balance")
                         print("4. Show details")
-                        print("5. Change password")
-                        print("6. Exit")
+                        print("5. Exit")
                         choice = input("Enter your choice: ")
                         if choice == '1':
                             amount = float(input('Enter amount: '))
@@ -105,7 +104,7 @@ class Bank:
                             return self.menuloggedin()
                             
                             
-                        elif choice == '6':
+                        elif choice == '5':
                             self.menu()
 
 
