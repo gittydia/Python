@@ -8,7 +8,6 @@ from tkinter import messagebox, simpledialog
 
 
 
-
 class CSV:
     CSV_FILE = "finance_data.csv"
     COLUMNS = ["date", "amount", "category", "description"]
@@ -134,28 +133,34 @@ class FinanceTracker:
         if messagebox.askyesno("Plot", "Do you want to see a plot?"):
             self.plot_transactions(filtered_df)
 
-            #self.plot_transactions(filtered_df)
-
         return filtered_df
     
     def plot_transactions(self, df):
         df.set_index("date", inplace=True)
 
-        income_df = df[df["category"] == "I"]
-        expense_df = df[df["category"] == "E"]
-
+        income_df = (
+        df[df["category"] == "I"]
+        .resample("D")
+        .sum()
+        .reindex(df.index, fill_value=0)
+        )
+        expense_df = (
+        df[df["category"] == "E"]
+        .resample("D")
+        .sum()
+        .reindex(df.index, fill_value=0)
+        )
 
         plt.figure(figsize=(10, 5))
         plt.plot(income_df.index, income_df["amount"], label="Income", color="g", marker="o")
         plt.plot(expense_df.index, expense_df["amount"], label="Expense", color="r", marker="o")
         plt.xlabel("Date")
-        plt.ylabel("Amount")
+        plt.ylabel("Amount") 
         plt.title("Income and Expenses Over Time")
         plt.legend()
         plt.grid(True)
         plt.show()
-
-       
+    
 
 root = tk.Tk()
 root.title("Personal Finance Tracker")
