@@ -1,10 +1,9 @@
 import pandas as pd
 import csv
 from datetime import datetime
-from data_entry import get_amount, get_category, get_date, get_descriptipn
+from data_entry import get_amount, get_category, get_date, get_description
 import matplotlib.pyplot as plt
 import tkinter as tk
-from data_entry import get_amount, get_category, get_date, get_descriptipn
 from tkinter import messagebox, simpledialog
 
 
@@ -106,30 +105,31 @@ class FinanceTracker:
         self.description_entry.delete(0, tk.END)
 
     def prompt_dates(self):
-        start_date = simpledialog.askstring("Input", "Enter the start date (dd-mm-yyyy):")
-        end_date = simpledialog.askstring("Input", "Enter the end date (dd-mm-yyyy):")
-        if start_date and end_date:
-            self.get_transactions(start_date, end_date)
+        date_started = simpledialog.askstring("Input", "Enter the start date (dd-mm-yyyy):")
+        date_finish_booked = simpledialog.askstring("Input", "Enter the end date (dd-mm-yyyy):")
+        if date_started and date_finish_booked:
+            self.get_transactions(date_started, date_finish_booked)
 
-    def get_transactions(self, start_date, end_date):
+    def get_transactions(self, date_started, date_finish_booked):
         df = pd.read_csv(CSV.CSV_FILE)
         df["date"] = pd.to_datetime(df["date"], format=CSV.FORMAT)
-        start_date = datetime.strptime(start_date, CSV.FORMAT)
-        end_date = datetime.strptime(end_date, CSV.FORMAT)
+        date_started = datetime.strptime(date_started, CSV.FORMAT)
+        date_finish_booked = datetime.strptime(date_finish_booked, CSV.FORMAT)
 
-        mask = (df["date"] >= start_date) & (df["date"] <= end_date)
+        mask = (df["date"] >= date_started) & (df["date"] <= date_finish_booked)
         filtered_df = df.loc[mask]
 
         if filtered_df.empty:
             messagebox.showinfo("No Transactions", "No transactions found in the given date range.")
         else:
-            messagebox.showinfo("Transactions", filtered_df.to_string(index=False, formatters={"date": lambda x: x.strftime(CSV.FORMAT)}))
-
-            total_income = filtered_df[filtered_df["category"] == "Income"]["amount"].sum()
-            total_expense = filtered_df[filtered_df["category"] == "Expense"]["amount"].sum()
+            total_income = filtered_df[filtered_df["category"] == "I"]["amount"].sum()
+            total_expense = filtered_df[filtered_df["category"] == "E"]["amount"].sum()
             net_savings = total_income - total_expense
 
+            messagebox.showinfo("Transactions", filtered_df.to_string(index=False, formatters={"date": lambda x: x.strftime(CSV.FORMAT)}))
             messagebox.showinfo("Summary", f"Total Income: ${total_income:.2f}\nTotal Expense: ${total_expense:.2f}\nNet Savings: ${net_savings:.2f}")
+    
+            
 
         if messagebox.askyesno("Plot", "Do you want to see a plot?"):
             self.plot_transactions(filtered_df)
@@ -141,18 +141,9 @@ class FinanceTracker:
     def plot_transactions(self, df):
         df.set_index("date", inplace=True)
 
-        income_df = (
-            df[df["category"] == "Income"]
-            .resample("D")
-            .sum()
-            .reindex(df.index, fill_value=0)
-        )
-        expense_df = (
-            df[df["category"] == "Expense"]
-            .resample("D")
-            .sum()
-            .reindex(df.index, fill_value=0)
-        )
+        income_df = df[df["category"] == "I"]
+        expense_df = df[df["category"] == "E"]
+
 
         plt.figure(figsize=(10, 5))
         plt.plot(income_df.index, income_df["amount"], label="Income", color="g", marker="o")
