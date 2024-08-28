@@ -1,5 +1,11 @@
 import sqlite3 as sql
 
+#function that will be added
+# debit card, graph, admin
+# added features
+# date and time,
+
+
 class Bank:
 
     def __init__(self, name, balance, password, email):
@@ -102,8 +108,7 @@ class Bank:
                         elif choice == '4':
                             self.show_details()
                             return self.menuloggedin()
-                            
-                            
+                              
                         elif choice == '5':
                             self.menu()
 
