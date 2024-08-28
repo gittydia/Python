@@ -1,10 +1,9 @@
 import sqlite3 as sql
-
+<<<<<<< HEAD
 #function that will be added
 # debit card, graph, admin
 # added features
 # date and time,
-
 
 class Bank:
 
