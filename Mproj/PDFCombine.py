@@ -32,7 +32,7 @@ def combine_pdfs(pdf_list, output_pdf):
             print(f"Error reading {pdf}: {e}")
             continue
 
-    # Write the merged PDF to output file
+
     try:
         with open(output_pdf, 'wb') as output:
             merger.write(output)
