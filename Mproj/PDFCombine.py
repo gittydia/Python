@@ -11,8 +11,6 @@ def get_pdf_list():
             print(f"File '{pdf}' does not exist")
         if input("Do you want to add more files? (Y/N): ").lower() == 'n':
             break
-        else:
-            return Exception("Invalid input. Please enter 'Y' or 'N'.")
     return pdf_list
 
 def combine_pdfs(pdf_list, output_pdf):
@@ -20,9 +18,7 @@ def combine_pdfs(pdf_list, output_pdf):
 
     for pdf in pdf_list:
         try:
-            # Open file in binary read mode
             with open(pdf, 'rb') as file:
-                # Create PdfReader object
                 pdf_reader = PyPDF2.PdfReader(file)
                 if len(pdf_reader.pages) > 0:
                     merger.append(pdf)
@@ -31,8 +27,6 @@ def combine_pdfs(pdf_list, output_pdf):
         except Exception as e:
             print(f"Error reading {pdf}: {e}")
             continue
-
-
     try:
         with open(output_pdf, 'wb') as output:
             merger.write(output)
